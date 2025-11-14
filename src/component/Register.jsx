@@ -1,17 +1,48 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { Link, useNavigate } from "react-router-dom";
+import { useAuth } from "../context/AuthContext";
 
 const Register = () => {
   const { register, handleSubmit, watch, formState: { errors } } = useForm();
   const navigate = useNavigate();
   const password = watch("password");
-
-  const onSubmit = (data) => {
+  const { registerUser, signInWithGoogle } = useAuth();
+  const onSubmit = async (data) => {
     console.log("Register Data:", data);
-    // Redirect to login page or dashboard
-    navigate("/login");
+
+    try {
+      registerUser(data?.email, data?.password).then(() => {
+
+        navigate("/")
+      })
+        .catch((error) => {
+          console.log("error into register on firbase response ", error);
+
+        })
+    } catch (error) {
+      console.log("error into register on firbase", error);
+
+    }
   };
+
+
+
+  const handleGoogleSignIn = async () => {
+    try {
+      await signInWithGoogle().then(() => {
+
+        navigate("/")
+      })
+        .catch((error) => {
+          console.log("error into register on firbase response ", error);
+
+        })
+    } catch (error) {
+      console.log("error into handle googld sign in", error);
+
+    }
+  }
 
   return (
     <div className="min-h-screen flex items-center justify-center bg-gray-100 dark:bg-gray-900">
@@ -39,7 +70,7 @@ const Register = () => {
             <input
               type="email"
               placeholder="Email"
-              {...register("email", { 
+              {...register("email", {
                 required: "Email is required",
                 pattern: { value: /^\S+@\S+$/i, message: "Invalid email" }
               })}
@@ -68,8 +99,8 @@ const Register = () => {
             <input
               type="password"
               placeholder="Confirm Password"
-              {...register("confirmPassword", { 
-                required: "Confirm password is required", 
+              {...register("confirmPassword", {
+                required: "Confirm password is required",
                 validate: value => value === password || "Passwords do not match"
               })}
               className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
@@ -86,8 +117,14 @@ const Register = () => {
           >
             Register
           </button>
-        </form>
 
+        </form>
+        <button
+          onClick={handleGoogleSignIn}
+          className="w-full bg-green-600 hover:bg-green-700 text-white font-bold py-3 rounded-lg transition duration-300"
+        >
+          SignInWithGoogle
+        </button>
         <p className="mt-4 text-center text-gray-600 dark:text-gray-400">
           Already have an account?{" "}
           <Link to="/login" className="text-blue-600 hover:underline">

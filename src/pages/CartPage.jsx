@@ -6,10 +6,10 @@ import { Link } from "react-router-dom";
 
 const CartPage = () => {
   // Calculate total
-  const dispatch = useDispatch();
+const dispatch = useDispatch();
   const cartItems = useSelector(state => state.cart?.cartItems)
   const total = cartItems
-    .reduce((acc, item) => acc + parseFloat(item.price.replace("$", "")), 0)
+    .reduce((acc, item) => acc + parseFloat(item.newPrice), 0)
 
   return (
     <div className="min-h-screen bg-gray-100 dark:bg-gray-900 p-6">
@@ -29,25 +29,25 @@ const CartPage = () => {
             {/* Cart Items */}
             <div className="lg:col-span-2 space-y-4">
               {cartItems?.map((item) => (
-                <div key={item.id} className="flex items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-md transition">
+                <div key={item._id} className="flex items-center bg-white dark:bg-gray-800 p-4 rounded-lg shadow hover:shadow-md transition">
 
                   {/* Book Image */}
                   <img
-                    src={item.img}
-                    alt={item.title}
+                    src={item?.coverImage}
+                    alt={item?.title}
                     className="w-20 h-28 object-cover rounded-lg mr-4"
                   />
 
                   {/* Book Info */}
                   <div className="flex-1">
                     <h2 className="font-semibold text-gray-800 dark:text-gray-100">{item.title}</h2>
-                    <p className="text-gray-500 dark:text-gray-400">{item.author}</p>
-                    <p className="text-gray-700 dark:text-gray-200 font-semibold mt-1">${item.price}</p>
+                    <p className="text-gray-500 dark:text-gray-400">{item?.author}</p>
+                    <p className="text-gray-700 dark:text-gray-200 font-semibold mt-1">${item?.newPrice}</p>
 
                     {/* Quantity Selector */}
                     <div className="mt-2 flex items-center space-x-2">
                       <button className="px-2 py-1 border rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition">-</button>
-                      <span className="px-2">{item.quantity}</span>
+                      <span className="px-2">{1}</span>
                       <button className="px-2 py-1 border rounded hover:bg-gray-200 dark:hover:bg-gray-700 transition">+</button>
                     </div>
                   </div>

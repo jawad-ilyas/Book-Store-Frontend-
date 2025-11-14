@@ -3,17 +3,26 @@ import Slider from "react-slick";
 import { FiChevronDown } from "react-icons/fi";
 import "slick-carousel/slick/slick.css";
 import "slick-carousel/slick/slick-theme.css";
-import { books, genres } from "./TopSellersData";
+import { genres } from "./TopSellersData";
 import { topSellersSliderSettings } from "./SliderSettings";
+import { useFetchAllBooksQuery } from "../../../redux/book/booksApi";
+import { Link } from "react-router-dom";
 
 const TopSellers = () => {
+  const { data, isLoading, isError } = useFetchAllBooksQuery();
+  const books = data?.books || []; // <-- ensures books is array
   const [selectedGenre, setSelectedGenre] = useState("All");
   const [dropdownOpen, setDropdownOpen] = useState(false);
+
+
+
+  // console.log("books data ", books)
+
 
   const filteredBooks =
     selectedGenre === "All"
       ? books
-      : books.filter((book) => book.genre === selectedGenre);
+      : books.filter((book) => book.category === selectedGenre);
 
   return (
     <section className="w-full py-16 px-6 bg-gray-50 dark:bg-gray-900 transition-colors duration-300">
@@ -53,22 +62,24 @@ const TopSellers = () => {
 
         {/* Slider */}
         <Slider {...topSellersSliderSettings}>
-          {filteredBooks.map((book) => (
-            <div key={book.id} className="px-3">
+          {filteredBooks?.map((book) => (
+            <div key={book?._id} className="px-3">
               <div className="bg-white dark:bg-gray-800 rounded-xl shadow-lg p-4 hover:scale-105 transform transition cursor-pointer h-full flex flex-col">
-                <img
-                  src={book.coverImage}
-                  alt={book.title}
-                  className="rounded-lg mb-4 w-full h-52 object-cover"
-                />
-                <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
-                  {book.title}
-                </h3>
+                <Link to={`/book/${book?._id}`}>
+                  <img
+                    src={book?.coverImage}
+                    alt={book?.title}
+                    className="rounded-lg mb-4 w-full h-52 object-cover"
+                  />
+                </Link>
+                <Link to={`/book/${book?._id}`} className="text-lg font-semibold text-gray-900 dark:text-white">
+                  {book?.title}
+                </Link>
                 <p className="text-sm text-gray-500 dark:text-gray-300">
-                  {book.author}
+                  {book?.author}
                 </p>
                 <p className="text-blue-600 dark:text-blue-400 font-bold mt-2">
-                  {book.price}
+                  {book?.price}
                 </p>
               </div>
             </div>

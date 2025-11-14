@@ -1,17 +1,19 @@
 import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
+import { useAuth } from "../context/AuthContext";
 
 const CheckoutPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
+  const { currentUser } = useAuth();
 
   // Calculate subtotal
   const subtotal = cartItems.reduce(
-    (acc, item) => acc + parseFloat(item.price.replace("$", "")) * 1,
+    (acc, item) => acc + parseFloat(item.newPrice) * 1,
     0
   );
-  let currentUser = true
+
 
   const onSubmit = (data) => {
     console.log("Checkout Data:", data);
@@ -147,15 +149,15 @@ const CheckoutPage = () => {
           <div className="bg-white dark:bg-gray-800 p-6 rounded-lg shadow space-y-4">
             <h2 className="text-xl font-semibold text-gray-800 dark:text-gray-100 mb-4">Order Summary</h2>
             {cartItems.map((item) => (
-              <div key={item.id} className="flex justify-between items-center border-b border-gray-200 dark:border-gray-700 py-2">
+              <div key={item._id} className="flex justify-between items-center border-b border-gray-200 dark:border-gray-700 py-2">
                 <div>
                   <h3 className="text-gray-800 dark:text-gray-100">{item.title}</h3>
                   <p className="text-gray-500 dark:text-gray-400 text-sm">
-                    {item.quantity} x ${parseFloat(item.price.replace("$", "")).toFixed(2)}
+                    {1} x ${parseFloat(item.newPrice).toFixed(2)}
                   </p>
                 </div>
                 <span className="text-gray-800 dark:text-gray-100 font-semibold">
-                  ${(parseFloat(item.price.replace("$", "")) * 1).toFixed(2)}
+                  ${(parseFloat(item.newPrice) * 1).toFixed(2)}
                 </span>
               </div>
             ))}
