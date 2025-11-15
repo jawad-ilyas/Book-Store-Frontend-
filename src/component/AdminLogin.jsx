@@ -3,6 +3,7 @@ import { useForm } from "react-hook-form";
 import { useNavigate, Link } from "react-router-dom";
 import { FiUser, FiLock, FiEye, FiEyeOff } from "react-icons/fi";
 import axios from "axios"
+import { BaseURL } from "../utilis/baseURL";
 const AdminLogin = () => {
     const { register, handleSubmit, formState: { errors } } = useForm();
     const navigate = useNavigate();
@@ -12,7 +13,7 @@ const AdminLogin = () => {
         console.log("Admin Login:", userdata);
         // navigate("/admin/dashboard");
         try {
-            const { data } = await axios.post("http://localhost:3000/api/v1/auth/admin/login", userdata, {
+            const { data } = await axios.post(`${BaseURL()}/api/v1/auth/admin/login`, userdata, {
                 withCredentials: true,
                 "headers": {
                     'Content-Type': 'application/json'

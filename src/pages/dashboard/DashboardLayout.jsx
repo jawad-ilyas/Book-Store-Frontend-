@@ -4,6 +4,7 @@ import { HiViewGridAdd } from "react-icons/hi";
 import { MdOutlineManageHistory } from "react-icons/md";
 import { FiSearch, FiBell, FiLogOut } from "react-icons/fi";
 import axios from "axios";
+import { BaseURL } from "../../utilis/baseURL";
 
 const DashboardLayout = () => {
     const navigate = useNavigate();
@@ -17,7 +18,7 @@ const DashboardLayout = () => {
 
         try {
 
-            const { data } = await axios.get("http://localhost:3000/api/v1/admin/")
+            const { data } = await axios.get(`${BaseURL()}/api/v1/admin/`)
             console.log("fetch data ", data)
         } catch (error) {
             console.log("error into the adming api ")

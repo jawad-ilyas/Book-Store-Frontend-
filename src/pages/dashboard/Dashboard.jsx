@@ -3,6 +3,7 @@ import React, { useEffect, useState } from 'react'
 import { useNavigate } from 'react-router-dom';
 import { MdIncompleteCircle } from 'react-icons/md'
 import RevenueChart from './RevenueChart';
+import { BaseURL } from '../../utilis/baseURL';
 
 const Dashboard = () => {
     const [loading, setLoading] = useState(true);
@@ -12,7 +13,7 @@ const Dashboard = () => {
     useEffect(() => {
         const fetchData = async () => {
             try {
-                const response =  await axios.get("http://localhost:3000/api/v1/admin/", {
+                const response =  await axios.get(`${BaseURL()}/api/v1/admin/`, {
                     headers: {
                         'Authorization': `Bearer ${localStorage.getItem('token')}`,
                         'Content-Type': 'application/json',
