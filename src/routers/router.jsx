@@ -10,6 +10,11 @@ import PrivateRoutes from './PrivateRoutes';
 import Order from '../pages/order/Order';
 import AdminRoutes from './AdminRoutes';
 import AdminLogin from '../component/AdminLogin';
+import DashboardLayout from '../pages/dashboard/DashboardLayout';
+import Dashboard from '../pages/dashboard/Dashboard';
+import ManageBooks from '../pages/dashboard/manageBooks/ManageBooks';
+import AddBook from '../pages/dashboard/addBook/AddBook';
+import UpdateBook from '../pages/dashboard/EditBook/UpdateBook';
 
 const router = createBrowserRouter([
 
@@ -67,7 +72,7 @@ const router = createBrowserRouter([
         path: "/dashboard",
         element: (
             <AdminRoutes>
-                <div>Dashboard Home</div>
+                <DashboardLayout />
             </AdminRoutes>
         ),
         children: [
@@ -75,28 +80,34 @@ const router = createBrowserRouter([
                 path: "",
                 element: (
                     <AdminRoutes>
-                        <div>Dashboard Home</div>
+                        <Dashboard />
                     </AdminRoutes>
                 )
             },
             {
-                path: "create-book",
+                path: "add-new-book",
                 element: (
                     <AdminRoutes>
-                        <div>create book</div>
+                        <div><AddBook /></div>
                     </AdminRoutes>
                 )
             },
             {
-                path: "edit/:id",
+                path: "edit-book/:id",
                 element: (<AdminRoutes>
-                    <div>edit book</div>
+                    <UpdateBook />
                 </AdminRoutes>)
             },
             {
                 path: "delete/:id",
                 element: (<AdminRoutes>
                     <div>delete book</div>
+                </AdminRoutes>)
+            },
+            {
+                path: "manage-books",
+                element: (<AdminRoutes>
+                    <ManageBooks />
                 </AdminRoutes>)
             },
         ]

@@ -12,8 +12,13 @@ const AdminLogin = () => {
         console.log("Admin Login:", userdata);
         // navigate("/admin/dashboard");
         try {
-            const { data } = await axios.post("http://localhost:3000/api/v1/auth/admin/login", userdata, { withCredentials: true })
-            
+            const { data } = await axios.post("http://localhost:3000/api/v1/auth/admin/login", userdata, {
+                withCredentials: true,
+                "headers": {
+                    'Content-Type': 'application/json'
+                }
+            })
+
             localStorage.setItem("token", data?.token)
             navigate("/dashboard");
             // console.log("data", data)

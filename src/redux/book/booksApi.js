@@ -26,7 +26,7 @@ const booksApi = createApi({
         }),
         fetchSingleBook: builder.query({
             query: (id) => `/${id}`,
-            providesTags: (result, error, id) =>[{ type: "Books", id }]
+            providesTags: (result, error, id) => [{ type: "Books", id }]
         }),
         createBook: builder.mutation({
             query: (newBook) => ({
@@ -49,7 +49,7 @@ const booksApi = createApi({
 
         }),
         deleteBook: builder.mutation({
-            query: ({ id }) => ({
+            query: (id) => ({
                 url: `/delete/${id}`,
                 method: "DELETE",
 
