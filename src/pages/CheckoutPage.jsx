@@ -2,19 +2,21 @@ import React from "react";
 import { useForm } from "react-hook-form";
 import { useSelector } from "react-redux";
 import { useAuth } from "../context/AuthContext";
+import { useCreateOrderMutation } from "../redux/orders/ordersApi";
+import { useNavigate } from "react-router-dom";
 
 const CheckoutPage = () => {
   const { register, handleSubmit, formState: { errors } } = useForm();
   const cartItems = useSelector((state) => state.cart?.cartItems || []);
   const { currentUser } = useAuth();
-
+  const navigate = useNavigate();
   // Calculate subtotal
   const subtotal = cartItems.reduce(
     (acc, item) => acc + parseFloat(item.newPrice) * 1,
     0
   );
 
-
+  const [createOrder, { isLoading }] = useCreateOrderMutation();
   const onSubmit = (data) => {
     console.log("Checkout Data:", data);
     alert("Order placed successfully!");
@@ -31,7 +33,7 @@ const CheckoutPage = () => {
       paymentMethod: data?.paymentMethod,
       phone: data?.phone,
       totalPrice: subtotal,
-      productIds: cartItems?.map(item => item?.id)
+      productIds: cartItems?.map(item => item?._id)
 
 
     }
@@ -39,6 +41,15 @@ const CheckoutPage = () => {
     console.log("newOrder", newOrder);
     console.log('====================================');
     // Here you can redirect to a confirmation page
+    try {
+      createOrder(newOrder).then(() => {
+        navigate("/")
+      }).catch((error) => {
+        console.log("error into create api ", error)
+      })
+    } catch (error) {
+      console.log("error into the check page api ", error)
+    }
   };
 
   return (
@@ -69,6 +80,8 @@ const CheckoutPage = () => {
                 <input
                   type="email"
                   placeholder="Email"
+                  value={currentUser?.email}
+                  readOnly
                   {...register("email", { required: "Email is required" })}
                   className="w-full p-3 rounded-lg border border-gray-300 dark:border-gray-700 focus:ring-2 focus:ring-blue-500 focus:outline-none bg-gray-50 dark:bg-gray-700 text-gray-900 dark:text-gray-100"
                 />
